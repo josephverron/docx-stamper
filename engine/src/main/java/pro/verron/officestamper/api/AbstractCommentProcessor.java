@@ -1,33 +1,25 @@
 package pro.verron.officestamper.api;
 
-import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.springframework.lang.Nullable;
-import pro.verron.officestamper.core.StandardParagraph;
 
 import java.util.Objects;
 
-/**
- * AbstractCommentProcessor is an abstract base class for comment processors.
- * It implements the CommentProcessor interface.
- * It provides common functionality and fields that subclasses can use.
- */
+/// AbstractCommentProcessor is an abstract base class for comment processors.
+/// It implements the CommentProcessor interface.
+/// It provides common functionality and fields that subclasses can use.
 public abstract class AbstractCommentProcessor
         implements CommentProcessor {
 
-    /**
-     * PlaceholderReplacer used to replace expressions in the comment text.
-     */
+    /// PlaceholderReplacer used to replace expressions in the comment text.
     protected final ParagraphPlaceholderReplacer placeholderReplacer;
     private Paragraph paragraph;
     private R currentRun;
     private Comment currentComment;
 
-    /**
-     * Creates an instance of AbstractCommentProcessor with the given ParagraphPlaceholderReplacer.
-     *
-     * @param placeholderReplacer the ParagraphPlaceholderReplacer used to replace expressions in the comment text
-     */
+    /// Creates an instance of AbstractCommentProcessor with the given ParagraphPlaceholderReplacer.
+    ///
+    /// @param placeholderReplacer the ParagraphPlaceholderReplacer used to replace expressions in the comment text
     protected AbstractCommentProcessor(ParagraphPlaceholderReplacer placeholderReplacer) {
         this.placeholderReplacer = placeholderReplacer;
     }
@@ -58,15 +50,6 @@ public abstract class AbstractCommentProcessor
 
     public Paragraph getParagraph() {
         return paragraph;
-    }
-
-    /**
-     * @param paragraph coordinates of the currently processed paragraph within the template.
-     *
-     * @deprecated use {@link #setParagraph(Paragraph)} instead
-     */
-    @Deprecated(since = "2.6", forRemoval = true) public void setParagraph(P paragraph) {
-        this.paragraph = StandardParagraph.from((DocxPart) paragraph.getParent(), paragraph);
     }
 
     public void setParagraph(Paragraph paragraph) {

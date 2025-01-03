@@ -2,13 +2,15 @@ package pro.verron.officestamper.preset.processors.table;
 
 import jakarta.xml.bind.JAXBElement;
 import org.docx4j.XmlUtils;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 import org.springframework.lang.Nullable;
-import pro.verron.officestamper.api.*;
+import pro.verron.officestamper.api.AbstractCommentProcessor;
+import pro.verron.officestamper.api.CommentProcessor;
+import pro.verron.officestamper.api.DocxPart;
+import pro.verron.officestamper.api.ParagraphPlaceholderReplacer;
 import pro.verron.officestamper.core.PlaceholderReplacer;
 import pro.verron.officestamper.preset.CommentProcessorFactory;
 import pro.verron.officestamper.preset.StampTable;
@@ -22,13 +24,11 @@ import java.util.function.Function;
 
 import static pro.verron.officestamper.api.OfficeStamperException.throwing;
 
-/**
- * TableResolver class.
- *
- * @author Joseph Verron
- * @version ${version}
- * @since 1.6.2
- */
+/// TableResolver class.
+///
+/// @author Joseph Verron
+/// @version ${version}
+/// @since 1.6.2
 public class TableResolver
         extends AbstractCommentProcessor
         implements CommentProcessorFactory.ITableResolver {
@@ -42,20 +42,15 @@ public class TableResolver
         this.nullSupplier = nullSupplier;
     }
 
-    /**
-     * Generate a new {@link TableResolver} instance where value is replaced by an empty list when <code>null</code>
-     *
-     * @param pr a {@link PlaceholderReplacer} instance
-     *
-     * @return a new {@link TableResolver} instance
-     */
+    /// Generate a new [TableResolver] instance where value is replaced by an empty list when <code>null</code>
+    ///
+    /// @param pr a [PlaceholderReplacer] instance
+    ///
+    /// @return a new [TableResolver] instance
     public static CommentProcessor newInstance(ParagraphPlaceholderReplacer pr) {
         return new TableResolver(pr, table -> Collections.emptyList());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override public void resolveTable(@Nullable StampTable givenTable) {
         var tbl = this.getParagraph()
                       .parent(Tbl.class)
@@ -63,9 +58,6 @@ public class TableResolver
         cols.put(tbl, givenTable);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override public void commitChanges(DocxPart document) {
         for (Map.Entry<Tbl, StampTable> entry : cols.entrySet()) {
             Tbl wordTable = entry.getKey();
@@ -84,13 +76,6 @@ public class TableResolver
         }
     }
 
-    @Override public void commitChanges(WordprocessingMLPackage document) {
-        throw new OfficeStamperException("Should not be called, since deprecation");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override public void reset() {
         cols.clear();
     }
